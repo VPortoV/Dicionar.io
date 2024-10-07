@@ -7,31 +7,43 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" 
     rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" 
     crossorigin="anonymous">
-    <scrip src="app.js"></scrip>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js"></script>
 </head>
-<body>
+<body onload="OnLoad()">
+
     <div class="container-fluid p-4 display-5 text-center">
         Dicionar.io
     </div>
     
     <div class="container-sm col-6 border border-dark rounded">
         <div class="row p-3">
-            <p>1. Que apresenta inexcedível perfeição material, moral ou intelectual; elevado. Superlativamente belo, esteticamente perfeito; grandioso, soberbo.</p>
-            <p>2.</p>
-            <p>3.</p>
-            <p>4.</p>
+            <span class="display-6 mb-3" id="word-text">?</span>
+            <p id="hint1">1.</p>
+            <p id="hint2">2.</p>
+            <p id="hint3">3.</p>
         </div>
     </div>
     
     <div class="container-sm mt-3 col-6 border border-dark rounded">
         <div class="row p-2 mt-2 mb-2 text-center">
-            <form>
-                <label>Próximo Chute:</label>
-                <input type="text">
+            <form onsubmit="checkGuess(); return false;">
+                <input type="text" id="guess-input" placeholder="Digite seu chute.">
                 <input type="submit" value="Enviar">
             </form>
         </div>
     </div>
+    
+    <div class="p-3 text-center" id="display-text"><!-- CORRECT! / WRONG! text !--></div>
+    
+    <div class="container-sm col-1 text-center">
+        <div class="row gy-1">
+            <div class="border border-dark rounded unrelated" id="last-guess"></div>
+            <div class="border border-dark rounded unrelated" id="oldest-guess"></div>
+        </div>
+    </div>
+
+
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" 

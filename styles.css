@@ -1,0 +1,15 @@
+.correct {
+    background-color: greenyellow;
+}
+
+.sinonym {
+    background-color: yellow;
+}
+
+.opposite {
+    background-color: red;
+}
+
+.unrelated {
+    background-color: gray;
+}
