@@ -6,8 +6,8 @@ const hints = [
 ];
 const similar = ["furacão", "tufão", "tornado", "ecnéfia", "vara", "vendaval", "vento"]
 const opposite = [];
-*/
 
+*/
 var word = "socorrer";
 const hints = [
 "1. Trazer ou pedir auxílio, esmola ou remédio; proteger(-se), valer(-se).",
@@ -21,20 +21,30 @@ var attempts = 0;
 var oldGuess = "";
 var oldGuessType = "unrelated";
 
+
 function OnLoad(){
     document.getElementById("hint1").innerHTML = hints[0];
 }
 
 function checkGuess(){
     attempts++;
-
+    document.getElementById("display-tentativas").innerHTML = "Tentativas Anteriores: " + attempts;
+    
+    //let tabela = document.querySelector('.guesses');
+    //let corpoTabela = tabela.getElementsByTagName('tbody');
+    
     clearGuessTags("last-guess");
     clearGuessTags("oldest-guess");
     
     var display = document.getElementById("display-text");
     var guess = document.getElementById("guess-input").value.toLowerCase();
     document.getElementById("guess-input").value = "";
-    console.log(guess);
+    console.log('Player guessed ' +  guess + '.');
+
+    //let guessRow = corpoTabela.insertRow(0);
+    //let guessCell = guessRow.insertCell(0);
+
+    //guessCell.innerHTML = guess;
     
     document.getElementById("last-guess").innerHTML = guess;
     document.getElementById("oldest-guess").innerHTML = oldGuess;
