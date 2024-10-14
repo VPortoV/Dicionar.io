@@ -18,44 +18,41 @@ const similar = ["ajudar", "acorrer", "acudir", "amparar", "apadrinhar", "apoiar
 const opposite = ["dessocorrer", "atarantar", "atravancar", "confundir", "desamparar", "desarranjar", "emaranhar", "ambaraçar", "embaralhar", "inibir", "empatar", "enlear", "enredar", "entravar", "estorvar", "impedir", "inibir", "pear", "perturbar", "prejudicar", "tolher", "transtornar"];
 
 var attempts = 0;
-var oldGuess = "";
-var oldGuessType = "unrelated";
-
+guesses = [];
 
 function OnLoad(){
     document.getElementById("hint1").innerHTML = hints[0];
+    
+    if(sessionStorage.getItem('attempts') != null){
+        attempts = parseInt(sessionStorage.getItem('attempts'));
+    }else{
+        sessionStorage.setItem('attempts','0');
+    }
+    populateAttempts();
+}
+
+function populateAttempts(){
+    document.getElementById("display-tentativas").innerHTML = "Tentativas Anteriores: " + attempts;
 }
 
 function checkGuess(){
     attempts++;
     document.getElementById("display-tentativas").innerHTML = "Tentativas Anteriores: " + attempts;
-    
-    //let tabela = document.querySelector('.guesses');
-    //let corpoTabela = tabela.getElementsByTagName('tbody');
-    
-    clearGuessTags("last-guess");
-    clearGuessTags("oldest-guess");
+
+    sessionStorage.setItem('attempts', attempts.toString());
+
+    let tabela = document.querySelector('.guesses');
+    let corpoTabela = tabela.getElementsByTagName('tbody');
     
     var display = document.getElementById("display-text");
     var guess = document.getElementById("guess-input").value.toLowerCase();
     document.getElementById("guess-input").value = "";
     console.log('Player guessed ' +  guess + '.');
 
-    //let guessRow = corpoTabela.insertRow(0);
-    //let guessCell = guessRow.insertCell(0);
+    let guessRow = corpoTabela.insertRow(0);
+    let guessCell = guessRow.insertCell(0);
 
-    //guessCell.innerHTML = guess;
-    
-    document.getElementById("last-guess").innerHTML = guess;
-    document.getElementById("oldest-guess").innerHTML = oldGuess;
-
-    oldGuess = guess;
-    document.getElementById("oldest-guess").classList.add(oldGuessType);
-    
-    var r = getWordRelation(guess);
-    oldGuessType = r;
-
-    document.getElementById("last-guess").classList.add(r);
+    guessCell.innerHTML = guess;
 
     if(r === "correct"){
         document.getElementById("word-text").innerHTML = word;
