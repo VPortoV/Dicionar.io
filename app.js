@@ -18,49 +18,71 @@ const similar = ["ajudar", "acorrer", "acudir", "amparar", "apadrinhar", "apoiar
 const opposite = ["dessocorrer", "atarantar", "atravancar", "confundir", "desamparar", "desarranjar", "emaranhar", "ambaraçar", "embaralhar", "inibir", "empatar", "enlear", "enredar", "entravar", "estorvar", "impedir", "inibir", "pear", "perturbar", "prejudicar", "tolher", "transtornar"];
 
 var attempts = 0;
-guesses = [];
+var guesses = [];
 
-function OnLoad(){
-    document.getElementById("hint1").innerHTML = hints[0];
-    
+function OnLoad(){    
+
     if(sessionStorage.getItem('attempts') != null){
         attempts = parseInt(sessionStorage.getItem('attempts'));
     }else{
         sessionStorage.setItem('attempts','0');
     }
+
+    if(sessionStorage.getItem('guesses') != null){
+        guesses = JSON.parse(sessionStorage.getItem('guesses'));
+    }else{
+        sessionStorage.setItem('guesses', JSON.stringify(guesses));
+    }
+
+    console.log(guesses.length);
     populateAttempts();
+    showHints();
 }
 
 function populateAttempts(){
     document.getElementById("display-tentativas").innerHTML = "Tentativas Anteriores: " + attempts;
+
+    let tabela = document.querySelector('.guesses');;
+    
+    for(g in guesses){
+        let guessRow = tabela.insertRow(0);    
+        let guessCell = guessRow.insertCell(0);
+
+        guessCell.innerHTML = guesses[g];
+
+        guessCell.classList.add(getWordRelation(guesses[g]));
+        console.log(g);
+    }
 }
 
 function checkGuess(){
     attempts++;
     document.getElementById("display-tentativas").innerHTML = "Tentativas Anteriores: " + attempts;
-
+    
     sessionStorage.setItem('attempts', attempts.toString());
-
-    let tabela = document.querySelector('.guesses');
-    let corpoTabela = tabela.getElementsByTagName('tbody');
     
     var display = document.getElementById("display-text");
     var guess = document.getElementById("guess-input").value.toLowerCase();
     document.getElementById("guess-input").value = "";
     console.log('Player guessed ' +  guess + '.');
+    
+    guesses.push(guess);
+    sessionStorage.setItem('guesses', JSON.stringify(guesses));
 
-    let guessRow = corpoTabela.insertRow(0);
+    let tabela = document.querySelector('.guesses');
+
+    let guessRow = tabela.insertRow(0);    
     let guessCell = guessRow.insertCell(0);
-
+    
     guessCell.innerHTML = guess;
 
-    if(r === "correct"){
+    if(guess.getWordRelation() === "correct"){
         document.getElementById("word-text").innerHTML = word;
         display.innerHTML = "ACERTOU!";
     }
     else{        
         display.innerHTML = "ERROU!"
-        showHint();
+        showHints();
     }
 }
 
@@ -79,12 +101,17 @@ function getWordRelation(guess){
     }
 }
 
-function showHint(){
-    if(attempts < hints.length){
-        var h = "hint" + (attempts + 1);
-        console.log(h)
-        document.getElementById(h).innerHTML = hints[attempts];       
+function showHints(){
+    for(h in hints){
+        if(attempts >= h){
+            var id = "hint" + h;
+            document.getElementById(id).innerHTML = hints[h];       
+        }
     }
+}
+
+function clearData(){
+    sessionStorage.clear();
 }
 
 function clearGuessTags(elementID){
