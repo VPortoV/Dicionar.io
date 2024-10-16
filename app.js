@@ -19,6 +19,8 @@ const opposite = ["dessocorrer", "atarantar", "atravancar", "confundir", "desamp
 
 var attempts = 0;
 var guesses = [];
+var correct = false;
+var displayTxt = "\0";
 
 function OnLoad(){    
 
@@ -33,8 +35,21 @@ function OnLoad(){
     }else{
         sessionStorage.setItem('guesses', JSON.stringify(guesses));
     }
+    
+    if(sessionStorage.getItem('correct') != null){
+        correct = JSON.parse(sessionStorage.getItem('correct'));
+    }else{
+        sessionStorage.setItem('correct', JSON.stringify(correct));
+    }
+    
+    if(sessionStorage.getItem('displayTxt') != null){
+        displayTxt = sessionStorage.getItem('displayTxt');
+    }else{
+        sessionStorage.setItem('displayTxt', displayTxt);
+    }
 
-    console.log(guesses.length);
+    document.getElementById("display-text").innerHTML = displayTxt;
+
     populateAttempts();
     showHints();
 }
@@ -60,12 +75,11 @@ function checkGuess(){
     document.getElementById("display-tentativas").innerHTML = "Tentativas Anteriores: " + attempts;
     
     sessionStorage.setItem('attempts', attempts.toString());
-    
-    var display = document.getElementById("display-text");
+
     var guess = document.getElementById("guess-input").value.toLowerCase();
     document.getElementById("guess-input").value = "";
     console.log('Player guessed ' +  guess + '.');
-    
+
     guesses.push(guess);
     sessionStorage.setItem('guesses', JSON.stringify(guesses));
 
@@ -76,12 +90,18 @@ function checkGuess(){
     
     guessCell.innerHTML = guess;
 
-    if(guess.getWordRelation() === "correct"){
-        document.getElementById("word-text").innerHTML = word;
-        display.innerHTML = "ACERTOU!";
+    if(getWordRelation(guess) === "correct"){
+        correct = true;
+        sessionStorage.setItem('correct', JSON.stringify(correct));
+
+        console.log('correct!!!!');
+        sessionStorage.setItem('displayTxt', 'ACERTOU!');
+        document.getElementById("display-text").innerHTML = "ACERTOU!";
+        showHints();
     }
     else{        
-        display.innerHTML = "ERROU!"
+        sessionStorage.setItem('displayTxt', 'ERROU!');
+        document.getElementById("display-text").innerHTML = "ERROU!";
         showHints();
     }
 }
@@ -102,8 +122,11 @@ function getWordRelation(guess){
 }
 
 function showHints(){
+    if(correct === true){
+        document.getElementById("word-text").innerHTML = word;
+    }
     for(h in hints){
-        if(attempts >= h){
+        if(attempts >= h || correct === true){
             var id = "hint" + h;
             document.getElementById(id).innerHTML = hints[h];       
         }
