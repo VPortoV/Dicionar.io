@@ -89,6 +89,7 @@ function checkGuess(){
     let guessCell = guessRow.insertCell(0);
     
     guessCell.innerHTML = guess;
+    guessCell.classList.add(getWordRelation(guess));
 
     if(getWordRelation(guess) === "correct"){
         correct = true;

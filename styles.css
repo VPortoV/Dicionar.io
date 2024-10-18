@@ -1,15 +1,20 @@
 .correct {
-    background-color: greenyellow;
+    background-color: rgb(185, 255, 176) !important;
 }
 
 .sinonym {
-    background-color: yellow;
+    background-color: rgb(255, 254, 176) !important;
 }
 
 .opposite {
-    background-color: red;
+    background-color:rgb(255, 176, 176) !important;
 }
 
 .unrelated {
-    background-color: gray;
+    background-color: rgb(235, 234, 234) !important;
+}
+
+.guesses td{
+    font-size: large;
+    border: 1px solid rgb(0, 0, 0);
 }
